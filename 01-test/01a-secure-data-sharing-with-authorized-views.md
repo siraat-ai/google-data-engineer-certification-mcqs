@@ -1,80 +1,114 @@
-Secure Data Sharing in a Segmented Data Warehouse
-🎭 Learning Dialogue: Mr. X vs. Mr. Artificial King
-🧩 The Scenario
 
-Mr. X works at a company where data is stored in a cloud-based warehouse. The storage is carefully divided into multiple datasets depending on where the data comes from and how sensitive it is.
+# Managing Restricted Data Access Using Authorized Views
 
-One dataset contains confidential information. Analysts need access to some of this data — but only certain tables and even then, only specific columns. The security team is very clear: analysts must not gain direct access to the entire sensitive dataset.
+## 🎭 Learning Dialogue: Mr. X vs. Mr. Artificial King
 
-Mr. X is unsure how to design this safely.
+### 🧩 The Situation
 
-💬 The Conversation
+A company stores business data in a cloud warehouse. Some datasets contain highly confidential information.  
 
-Mr. X:
-We’ve got a sensitive dataset. Analysts only need a few columns from a few tables. Why don’t we just give them access to those tables directly?
+Data analysts need access to only certain fields from specific tables inside a sensitive dataset.  
 
-Mr. Artificial King:
-That sounds simple, but direct access to tables inside a sensitive dataset increases risk. Even if permissions are narrow, you’re still exposing the dataset boundary. That’s not ideal when security isolation matters.
+The security team insists:
+- Analysts must NOT get full dataset access.
+- Only limited columns should be readable.
+- Sensitive data must remain protected.
 
-Mr. X:
-Okay, what if we create filtered views inside the same dataset and give analysts access to those views?
+Mr. X is evaluating different approaches.
 
-Mr. Artificial King:
-Better — but still risky. If the views live in the same dataset as the raw data, permission management becomes tricky. You may unintentionally expose more than intended. Good security architecture prefers stronger separation of concerns.
+---
 
-Mr. X:
-So… should we copy the allowed columns into a new dataset and grant access there?
+## 💬 The Conversation
 
-Mr. Artificial King:
-That introduces duplication and maintenance headaches. Now you must manage synchronization, handle updates, and ensure consistency between copies. That’s operational overhead — and unnecessary.
+**Mr. X:**  
+We need to let analysts read only selected columns from sensitive tables. I’ve thought of a few approaches. Can you help me evaluate them?
 
-Mr. X:
-Then what’s the cleanest approach?
+---
 
-Mr. Artificial King:
-Create a separate dataset specifically for controlled access.
+### 🔎 Approach 1:  
+Create a new dataset. Inside it, define special views that expose only the required columns from the sensitive dataset. Then grant analysts access only to this new dataset.
 
-Inside that new dataset, define authorized views that reference only the permitted tables and columns from the sensitive dataset.
+**Mr. Artificial King:**  
+Excellent design.  
 
-Then grant analysts viewer permissions only on the new dataset, not on the original one.
+This creates:
+- Strong separation between raw sensitive data and consumer-facing data.
+- Controlled exposure using authorized views.
+- No duplication of data.
+- Clean governance boundaries.
 
-This way:
+This is secure and scalable.
 
-Analysts see only curated views.
+---
 
-They cannot directly access underlying raw tables.
+### 🔎 Approach 2:  
+Create views inside the same sensitive dataset and give analysts viewer access to those views.
 
-No data duplication occurs.
+**Mr. Artificial King:**  
+Risky.  
 
-Governance remains clean and auditable.
+When views reside in the same dataset:
+- Permission management becomes complex.
+- Accidental exposure risk increases.
+- Dataset-level isolation weakens.
 
-The original dataset remains tightly protected.
+Separation of datasets is a better architectural practice.
 
-🏁 Expert Conclusion
+---
 
-The safest and most maintainable solution is to:
+### 🔎 Approach 3:  
+Grant analysts table-level viewer access and somehow restrict visible columns.
 
-Create a new dataset dedicated to controlled sharing.
+**Mr. Artificial King:**  
+Not ideal.  
 
-Build authorized views in that dataset referencing approved data from the sensitive dataset.
+Column-level restriction requires policy tagging and proper schema controls.  
+Simply granting table access does not inherently protect specific fields.
 
-Grant analyst access only to the new dataset.
+This approach lacks structured governance.
 
-This preserves strong dataset-level isolation while allowing precise, column-level exposure.
+---
 
-🧠 Conceptual Lesson
-🔑 Key Principle
+### 🔎 Approach 4:  
+Copy allowed columns into a new dataset and grant access there.
 
-Use authorized views in a separate dataset to provide restricted access to sensitive data without granting direct access to the source dataset.
+**Mr. Artificial King:**  
+This works technically, but:
+- It duplicates data.
+- Requires synchronization.
+- Increases operational complexity.
+- Introduces maintenance overhead.
 
-🏗 When to Apply This
+Avoid unnecessary duplication when secure referencing is possible.
 
-When datasets contain confidential or regulated information.
+---
 
-When different teams need partial visibility.
+## 🏁 Final Recommendation
 
-When you want strong security boundaries without copying data.
+The best approach is:
 
-When maintaining governance and minimizing operational complexity is important.
+✅ Create a separate dataset  
+✅ Build authorized views exposing only approved data  
+✅ Grant analysts access only to that dataset  
 
-Think of it as building a secure “glass window” into your data — instead of handing over the keys to the vault.
+This ensures:
+- Strong security isolation  
+- Zero data duplication  
+- Clean access management  
+- Governance compliance  
+
+---
+
+## 🧠 Conceptual Lesson
+
+### 🔑 Core Principle
+Use **authorized views in a separate dataset** to securely expose limited data from sensitive sources.
+
+### 📌 When to Apply This
+- When datasets contain confidential information  
+- When different teams need limited access  
+- When maintaining governance boundaries is critical  
+- When you want scalable and secure data sharing  
+
+Design secure data access like a bank vault:  
+Show only what’s necessary — never the entire vault.
