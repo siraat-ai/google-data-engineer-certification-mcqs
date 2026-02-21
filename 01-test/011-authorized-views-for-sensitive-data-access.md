@@ -1,5 +1,3 @@
-Filename: authorized-views-for-sensitive-data-access.md
-
 # Secure Data Sharing with Authorized Views in BigQuery
 
 ## 🎭 Learning Dialogue: Mr. X vs. Mr. Artificial King
