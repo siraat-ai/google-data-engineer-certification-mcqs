@@ -1,4 +1,3 @@
-
 # Managing Restricted Data Access Using Authorized Views
 
 ## 🎭 Learning Dialogue: Mr. X vs. Mr. Artificial King
