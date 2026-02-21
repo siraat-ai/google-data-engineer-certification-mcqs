@@ -1,113 +1,86 @@
-# Managing Restricted Data Access Using Authorized Views
+Filename: authorized-views-for-sensitive-data-access.md
+
+# Secure Data Sharing with Authorized Views in BigQuery
 
 ## 🎭 Learning Dialogue: Mr. X vs. Mr. Artificial King
 
-### 🧩 The Situation
+**Mr. X:**
+Sir, humari company BigQuery ko main data warehouse ke taur par use karti hai. Kuch datasets sensitive hain jahan har kisi ko access nahi dena chahte. Lekin data analysts ko unhi tables ke kuch limited columns chahiye analysis ke liye. Ab hum kaise secure tareeke se unko access dein?
 
-A company stores business data in a cloud warehouse. Some datasets contain highly confidential information.  
-
-Data analysts need access to only certain fields from specific tables inside a sensitive dataset.  
-
-The security team insists:
-- Analysts must NOT get full dataset access.
-- Only limited columns should be readable.
-- Sensitive data must remain protected.
-
-Mr. X is evaluating different approaches.
+**Mr. Artificial King:**
+Achha sawaal hai. Yahan sabse important cheez hai **least privilege principle** follow karna. Matlab analyst ko sirf wohi data mile jo unko zaroori hai — na zyada, na kam.
 
 ---
 
-## 💬 The Conversation
+### 🔍 Scenario Samajhte Hain
 
-**Mr. X:**  
-We need to let analysts read only selected columns from sensitive tables. I’ve thought of a few approaches. Can you help me evaluate them?
+Sensitive dataset mein multiple tables hain. Agar tum directly dataset level pe **Viewer role** de doge, to analysts ko sab tables ka access mil sakta hai — jo risky hai.
 
----
+**Mr. X:**
+To phir sir, kya main un tables ke upar direct access de doon?
 
-### 🔎 Approach 1:  
-Create a new dataset. Inside it, define special views that expose only the required columns from the sensitive dataset. Then grant analysts access only to this new dataset.
-
-**Mr. Artificial King:**  
-Excellent design.  
-
-This creates:
-- Strong separation between raw sensitive data and consumer-facing data.
-- Controlled exposure using authorized views.
-- No duplication of data.
-- Clean governance boundaries.
-
-This is secure and scalable.
+**Mr. Artificial King:**
+Direct table access bhi risky ho sakta hai, especially agar tum column-level filtering control nahi kar rahe. BigQuery mein column-level security ke liye **policy tags** use karte hain, lekin yahan requirement yeh hai ke analysts ko sirf selected columns visible hon — bina original dataset expose kiye.
 
 ---
 
-### 🔎 Approach 2:  
-Create views inside the same sensitive dataset and give analysts viewer access to those views.
+### 💡 Smarter Architecture Approach
 
-**Mr. Artificial King:**  
-Risky.  
+Best practice kya hai?
 
-When views reside in the same dataset:
-- Permission management becomes complex.
-- Accidental exposure risk increases.
-- Dataset-level isolation weakens.
+1. Ek **naya dataset** create karo.
+2. Us naye dataset mein **authorized views** banao.
+3. Authorized views sirf wohi columns select karein jo analysts ko chahiye.
+4. Analysts ko sirf naye dataset par **Viewer role** do.
 
-Separation of datasets is a better architectural practice.
+**Mr. X:**
+Authorized view alag dataset mein kyun banana zaroori hai?
 
----
+**Mr. Artificial King:**
+Agar tum authorized view same dataset mein banaoge aur wahan Viewer role de doge, to accidentally original tables ka bhi access mil sakta hai.
 
-### 🔎 Approach 3:  
-Grant analysts table-level viewer access and somehow restrict visible columns.
+Alag dataset use karne ka fayda yeh hai ke:
 
-**Mr. Artificial King:**  
-Not ideal.  
+* Tum source dataset ko secure rakhte ho.
+* Analysts sirf view ke through filtered data dekhte hain.
+* Underlying tables unko directly accessible nahi hoti.
 
-Column-level restriction requires policy tagging and proper schema controls.  
-Simply granting table access does not inherently protect specific fields.
-
-This approach lacks structured governance.
+Aur yaad rahe:
+Source dataset aur authorized view dataset same regional location mein hone chahiye.
 
 ---
 
-### 🔎 Approach 4:  
-Copy allowed columns into a new dataset and grant access there.
+### ❌ Ghalat Approaches Kya Ho Sakte Hain?
 
-**Mr. Artificial King:**  
-This works technically, but:
-- It duplicates data.
-- Requires synchronization.
-- Increases operational complexity.
-- Introduces maintenance overhead.
-
-Avoid unnecessary duplication when secure referencing is possible.
+* Sirf dataset-level Viewer role dena (zyada access mil sakta hai).
+* Direct column selection bina proper policy tags ke.
+* Tables ko copy karna naye dataset mein (maintenance issue aur data duplication).
 
 ---
 
-## 🏁 Final Recommendation
+## ✅ Expert Conclusion
 
-The best approach is:
+Sensitive data ko securely share karne ke liye:
 
-✅ Create a separate dataset  
-✅ Build authorized views exposing only approved data  
-✅ Grant analysts access only to that dataset  
+* Ek **separate dataset** create karo.
+* Wahan **authorized views** banao jo sirf required columns expose karein.
+* Analysts ko sirf us naye dataset par access do.
 
-This ensures:
-- Strong security isolation  
-- Zero data duplication  
-- Clean access management  
-- Governance compliance  
+Is tarah tum:
+
+* Security maintain karte ho
+* Governance follow karte ho
+* Least privilege principle apply karte ho
 
 ---
 
 ## 🧠 Conceptual Lesson
 
-### 🔑 Core Principle
-Use **authorized views in a separate dataset** to securely expose limited data from sensitive sources.
+**Key Principle:**
+Roman Urdu: “Sensitive data ko directly expose na karo. Authorized views ke through controlled access do.”
+English Terms: Use **Authorized Views + Separate Dataset + Viewer Role** for controlled access.
 
-### 📌 When to Apply This
-- When datasets contain confidential information  
-- When different teams need limited access  
-- When maintaining governance boundaries is critical  
-- When you want scalable and secure data sharing  
+**Real-World Application:**
+Jab bhi kisi team ko restricted subset of data dena ho — especially finance, healthcare, ya PII related systems mein — to hamesha logical isolation aur controlled exposure design karo instead of direct dataset sharing.
 
-Design secure data access like a bank vault:  
-Show only what’s necessary — never the entire vault.
+---
