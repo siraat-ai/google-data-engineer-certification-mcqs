@@ -1,4 +1,3 @@
-Filename: dataflow-streaming-job-update-and-state-management-notes.md
 
 # In-Depth Study Notes: Updating Running Dataflow Streaming Jobs Without Data Loss
 
