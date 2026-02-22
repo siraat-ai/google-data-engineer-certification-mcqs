@@ -27,7 +27,9 @@ You work on:
 👉 Companies need this **immediately** because without clean data:
 
 > ❌ AI bhi nahi chalega
+> 
 > ❌ Dashboards bhi nahi banenge
+> 
 > ❌ Business decisions ruk jate hain
 
 ### 📈 Market Reality (2025–2028)
