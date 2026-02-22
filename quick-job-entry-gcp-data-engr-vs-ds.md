@@ -186,4 +186,3 @@ Without the city… design ka kya karein?
 
 ---
 
-If you want, I can map this specifically to **Germany vs Spain market demand** or create a **6-month execution plan** to enter this role.
