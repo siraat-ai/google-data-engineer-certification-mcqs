@@ -1,4 +1,3 @@
-Filename: 
 
 # Cost-Effective Schema Modification in BigQuery
 
