@@ -200,11 +200,17 @@ BI Engine:
 Optimized Architecture:
 
 Raw Sales Data → BigQuery Table
+
 ↓
+
 Materialized View (Precomputed Aggregation)
+
 ↓
-BI Engine (In-memory cache)
+
+BI Engine (In-memory Cache)
+
 ↓
+
 Dashboard / BI Tool
 
 ---
